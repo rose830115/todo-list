@@ -41,6 +41,15 @@ app.post('/todos', (req, res) => {
     .catch(error => console.error(error))
 })
 
+//進入detail頁面
+app.get('/todos/:id', (req, res) => {
+  const id = req.params.id
+  Todo.findById(id)
+    .lean()
+    .then((todo) => res.render('datail', { todo }))
+    .catch(error => console.error(error))
+})
+
 app.listen(port, () => {
   console.log(`app is running on localhost:${port}`)
 })
