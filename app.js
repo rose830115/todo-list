@@ -70,9 +70,17 @@ app.post('/todos/:id/edit', (req, res) => {
       return todo.save()
     })
     .then(() => res.redirect(`/todos/${id}`))
-    .catch(error => console.log(error))
+    .catch(error => console.error(error))
 })
 
+//D刪除todo
+app.post('/todos/:id/delete', (req, res) => {
+  const id = req.params.id
+  return Todo.findById(id)
+    .then(todo => todo.remove())
+    .then(() => res.redirect('/'))
+    .catch(error => console.error(error))
+})
 
 app.listen(port, () => {
   console.log(`app is running on localhost:${port}`)
