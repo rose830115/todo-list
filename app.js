@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const exphbs = require('express-handlebars')
 const Todo = require('./models/todo')
+const methodOverride = require('method-override')
 const app = express()
 const port = 3000
 const db = mongoose.connection
@@ -19,6 +20,7 @@ db.once('open', () => {
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
 app.use(express.urlencoded({ extended: true }))
+app.use(methodOverride('_method'))
 
 //R進入首頁，抓取資料並渲染
 app.get('/', (req, res) => {
@@ -62,7 +64,7 @@ app.get('/todos/:id/edit', (req, res) => {
 })
 
 //U修改todo
-app.post('/todos/:id/edit', (req, res) => {
+app.put('/todos/:id', (req, res) => {
   const id = req.params.id
   const { name, isDone } = req.body
   return Todo.findById(id)
@@ -76,7 +78,7 @@ app.post('/todos/:id/edit', (req, res) => {
 })
 
 //D刪除todo
-app.post('/todos/:id/delete', (req, res) => {
+app.delete('/todos/:id', (req, res) => {
   const id = req.params.id
   return Todo.findById(id)
     .then(todo => todo.remove())
