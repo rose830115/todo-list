@@ -8,6 +8,12 @@ const todSchema = new Schema({
   isDone: {
     type: Boolean,
     default: false
+  },
+  userId: { // 加入與user關聯設定
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    index: true,
+    required: true
   }
 })
 
